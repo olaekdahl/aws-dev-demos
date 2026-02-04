@@ -13,28 +13,34 @@ async function withXRaySegment<T>(name: string, fn: () => Promise<T>): Promise<T
   if (isXrayDisabled()) return fn();
 
   const SegmentCtor = (AWSXRay as any).Segment;
-  const setSegment = (AWSXRay as any).setSegment as ((seg: any) => void) | undefined;
+  const ns = AWSXRay.getNamespace();
 
-  if (!SegmentCtor || !setSegment) {
+  if (!SegmentCtor || !ns) {
     return fn();
   }
 
-  const segment = new SegmentCtor(name);
-  setSegment(segment);
+  // Run within the X-Ray namespace context so setSegment works
+  return new Promise((resolve, reject) => {
+    ns.run(() => {
+      const segment = new SegmentCtor(name);
+      AWSXRay.setSegment(segment);
 
-  try {
-    const result = await fn();
-    segment.close();
-    return result;
-  } catch (err) {
-    try {
-      segment.addError?.(err);
-    } catch {
-      // ignore
-    }
-    segment.close();
-    throw err;
-  }
+      fn()
+        .then((result) => {
+          segment.close();
+          resolve(result);
+        })
+        .catch((err) => {
+          try {
+            segment.addError?.(err);
+          } catch {
+            // ignore
+          }
+          segment.close();
+          reject(err);
+        });
+    });
+  });
 }
 
 export function createJobHandler(deps: {

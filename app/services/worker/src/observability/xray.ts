@@ -2,11 +2,15 @@ import AWSXRay from "aws-xray-sdk-core";
 import { isXrayDisabled } from "../config";
 import { logger } from "../logger";
 
+// CRITICAL: Set IGNORE_ERROR strategy at module load time, BEFORE any AWS clients
+// are created with captureAWSv3Client. AWS SDK calls happen both inside and outside
+// X-Ray segment context (e.g., SQS polling loop). Without this, every SQS
+// ReceiveMessage call throws "Failed to get the current sub/segment from the context"
+AWSXRay.setContextMissingStrategy("IGNORE_ERROR");
+
 export function initXRay() {
   if (isXrayDisabled()) {
     logger.info("X-Ray disabled (XRAY_DISABLED=true)");
-    // Prevent errors when AWS SDK calls happen outside X-Ray context
-    AWSXRay.setContextMissingStrategy("IGNORE_ERROR");
     return { enabled: false as const };
   }
 
