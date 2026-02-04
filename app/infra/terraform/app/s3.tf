@@ -90,7 +90,6 @@ resource "aws_s3_bucket_ownership_controls" "alb_logs" {
 }
 
 data "aws_elb_service_account" "this" {}
-data "aws_caller_identity" "current" {}
 
 resource "aws_s3_bucket_policy" "alb_logs" {
   bucket = aws_s3_bucket.alb_logs.id

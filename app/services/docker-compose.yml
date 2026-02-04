@@ -77,6 +77,8 @@ services:
       context: ./web
     environment:
       - NODE_ENV=production
+    volumes:
+      - ./web/nginx/nginx.local.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - api
     ports:

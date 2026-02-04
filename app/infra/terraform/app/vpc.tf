@@ -1,5 +1,11 @@
 data "aws_availability_zones" "available" {
   state = "available"
+
+  # Filter out Local Zones and Wavelength Zones - they don't support many services
+  filter {
+    name   = "opt-in-status"
+    values = ["opt-in-not-required"]
+  }
 }
 
 module "vpc" {

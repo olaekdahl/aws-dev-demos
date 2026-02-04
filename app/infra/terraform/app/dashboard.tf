@@ -14,13 +14,11 @@ resource "aws_cloudwatch_dashboard" "main" {
     log_group_api       = aws_cloudwatch_log_group.api.name
     log_group_web       = aws_cloudwatch_log_group.web.name
     queue_name          = aws_sqs_queue.jobs.name
-    dlq_name            = aws_sqs_queue.jobs_dlq.name
+    dlq_name            = aws_sqs_queue.dlq.name
     ddb_quizzes         = aws_dynamodb_table.quizzes.name
     ddb_attempts        = aws_dynamodb_table.attempts.name
     ddb_exports         = aws_dynamodb_table.exports.name
     xray_api_service    = "code-quiz-api"
     xray_worker_service = "code-quiz-worker"
   })
-
-  tags = local.tags
 }

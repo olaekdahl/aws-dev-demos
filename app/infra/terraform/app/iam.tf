@@ -142,17 +142,10 @@ resource "aws_iam_role_policy_attachment" "worker_task" {
 # Web task role intentionally minimal (no AWS API calls).
 # --- GitHub Actions OIDC Role (optional) ---
 
-data "tls_certificate" "github_actions" {
-  url = "https://token.actions.githubusercontent.com"
-}
-
-resource "aws_iam_openid_connect_provider" "github_actions" {
+# Look up existing OIDC provider (may already exist in account)
+data "aws_iam_openid_connect_provider" "github_actions_existing" {
   count = var.github_repo != "" ? 1 : 0
-
-  url = "https://token.actions.githubusercontent.com"
-  client_id_list = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.github_actions.certificates[0].sha1_fingerprint]
-  tags = local.tags
+  url   = "https://token.actions.githubusercontent.com"
 }
 
 data "aws_iam_policy_document" "github_actions_assume" {
@@ -164,7 +157,7 @@ data "aws_iam_policy_document" "github_actions_assume" {
 
     principals {
       type        = "Federated"
-      identifiers = [aws_iam_openid_connect_provider.github_actions[0].arn]
+      identifiers = [data.aws_iam_openid_connect_provider.github_actions_existing[0].arn]
     }
 
     condition {
