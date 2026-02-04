@@ -1,0 +1,16 @@
+aws_region         = "us-west-2"
+project_name       = "code-quiz"
+domain_name        = "code-quiz.io"
+
+# First apply:
+enable_ecs_services = false
+
+# Once images are in ECR:
+# enable_ecs_services = true
+# api_image    = "<ACCOUNT>.dkr.ecr.us-west-2.amazonaws.com/code-quiz/api:<tag>"
+# worker_image = "<ACCOUNT>.dkr.ecr.us-west-2.amazonaws.com/code-quiz/worker:<tag>"
+# web_image    = "<ACCOUNT>.dkr.ecr.us-west-2.amazonaws.com/code-quiz/web:<tag>"
+
+# Optional: create GitHub Actions OIDC role
+# github_repo   = "your-org/your-repo"
+# github_branch = "main"

@@ -1,0 +1,103 @@
+name: Deploy
+
+# on:
+#   push:
+#     branches: ["main"]
+
+on:
+  workflow_dispatch:
+    
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  PROJECT_NAME: code-quiz
+  TF_WORKING_DIR: infra/terraform/app
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      - name: Configure AWS Credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Compute image URIs
+        id: img
+        run: |
+          ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          echo "account_id=$ACCOUNT_ID" >> $GITHUB_OUTPUT
+          API_IMAGE="$ACCOUNT_ID.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ env.PROJECT_NAME }}/api:${GITHUB_SHA}"
+          WORKER_IMAGE="$ACCOUNT_ID.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ env.PROJECT_NAME }}/worker:${GITHUB_SHA}"
+          WEB_IMAGE="$ACCOUNT_ID.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ env.PROJECT_NAME }}/web:${GITHUB_SHA}"
+          echo "api_image=$API_IMAGE" >> $GITHUB_OUTPUT
+          echo "worker_image=$WORKER_IMAGE" >> $GITHUB_OUTPUT
+          echo "web_image=$WEB_IMAGE" >> $GITHUB_OUTPUT
+
+      - name: Build & push API image
+        run: |
+          docker build -t "${{ steps.img.outputs.api_image }}" services/api
+          docker push "${{ steps.img.outputs.api_image }}"
+
+      - name: Build & push Worker image
+        run: |
+          docker build -t "${{ steps.img.outputs.worker_image }}" services/worker
+          docker push "${{ steps.img.outputs.worker_image }}"
+
+      - name: Build & push Web image
+        run: |
+          docker build -t "${{ steps.img.outputs.web_image }}" services/web
+          docker push "${{ steps.img.outputs.web_image }}"
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.5"
+
+      - name: Terraform init
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          terraform init \
+            -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" \
+            -backend-config="key=${{ secrets.TF_STATE_KEY }}" \
+            -backend-config="region=${{ vars.AWS_REGION }}" \
+            -backend-config="dynamodb_table=${{ secrets.TF_LOCK_TABLE }}" \
+            -backend-config="encrypt=true"
+
+      - name: Terraform apply (deploy images)
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          terraform apply -auto-approve \
+            -var="aws_region=${{ vars.AWS_REGION }}" \
+            -var="github_repo=${{ github.repository }}" \
+            -var="github_branch=main" \
+            -var="enable_ecs_services=true" \
+            -var="api_image=${{ steps.img.outputs.api_image }}" \
+            -var="worker_image=${{ steps.img.outputs.worker_image }}" \
+            -var="web_image=${{ steps.img.outputs.web_image }}"

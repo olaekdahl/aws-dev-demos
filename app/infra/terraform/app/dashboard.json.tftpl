@@ -1,0 +1,202 @@
+{
+  "widgets": [
+    {
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 24,
+      "height": 2,
+      "properties": {
+        "markdown": "# ${project} — Service Overview\nThis dashboard covers ALB, ECS, SQS, DynamoDB, X-Ray and key logs."
+      }
+    },
+
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 2,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "region": "${region}",
+        "title": "ALB Requests & Latency",
+        "view": "timeSeries",
+        "stat": "Sum",
+        "period": 60,
+        "metrics": [
+          [ "AWS/ApplicationELB", "RequestCount", "LoadBalancer", "${alb_arn_suffix}", { "stat": "Sum" } ],
+          [ ".", "TargetResponseTime", ".", ".", { "stat": "Average", "yAxis": "right" } ]
+        ]
+      }
+    },
+
+    {
+      "type": "metric",
+      "x": 12,
+      "y": 2,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "region": "${region}",
+        "title": "ALB 5XX (LB vs Targets)",
+        "view": "timeSeries",
+        "stat": "Sum",
+        "period": 60,
+        "metrics": [
+          [ "AWS/ApplicationELB", "HTTPCode_ELB_5XX_Count", "LoadBalancer", "${alb_arn_suffix}" ],
+          [ ".", "HTTPCode_Target_5XX_Count", ".", "." ]
+        ]
+      }
+    },
+
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 8,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "region": "${region}",
+        "title": "Target Group Health",
+        "view": "timeSeries",
+        "stat": "Average",
+        "period": 60,
+        "metrics": [
+          [ "AWS/ApplicationELB", "HealthyHostCount", "TargetGroup", "${tg_web_arn_suffix}", "LoadBalancer", "${alb_arn_suffix}", { "label": "web HealthyHostCount" } ],
+          [ "AWS/ApplicationELB", "HealthyHostCount", "TargetGroup", "${tg_api_arn_suffix}", "LoadBalancer", "${alb_arn_suffix}", { "label": "api HealthyHostCount" } ],
+          [ "AWS/ApplicationELB", "UnHealthyHostCount", "TargetGroup", "${tg_web_arn_suffix}", "LoadBalancer", "${alb_arn_suffix}", { "label": "web UnHealthyHostCount" } ],
+          [ "AWS/ApplicationELB", "UnHealthyHostCount", "TargetGroup", "${tg_api_arn_suffix}", "LoadBalancer", "${alb_arn_suffix}", { "label": "api UnHealthyHostCount" } ]
+        ]
+      }
+    },
+
+    {
+      "type": "metric",
+      "x": 12,
+      "y": 8,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "region": "${region}",
+        "title": "ECS Service CPU / Memory",
+        "view": "timeSeries",
+        "period": 60,
+        "metrics": [
+          [ "AWS/ECS", "CPUUtilization", "ClusterName", "${cluster_name}", "ServiceName", "${api_service_name}", { "stat": "Average", "label": "api CPU %" } ],
+          [ "AWS/ECS", "MemoryUtilization", "ClusterName", "${cluster_name}", "ServiceName", "${api_service_name}", { "stat": "Average", "yAxis": "right", "label": "api Mem %" } ],
+          [ "AWS/ECS", "CPUUtilization", "ClusterName", "${cluster_name}", "ServiceName", "${web_service_name}", { "stat": "Average", "label": "web CPU %" } ],
+          [ "AWS/ECS", "MemoryUtilization", "ClusterName", "${cluster_name}", "ServiceName", "${web_service_name}", { "stat": "Average", "yAxis": "right", "label": "web Mem %" } ]
+        ]
+      }
+    },
+
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 14,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "region": "${region}",
+        "title": "SQS Jobs Queue",
+        "view": "timeSeries",
+        "period": 60,
+        "metrics": [
+          [ "AWS/SQS", "ApproximateNumberOfMessagesVisible", "QueueName", "${queue_name}", { "stat": "Average", "label": "Visible" } ],
+          [ ".", "ApproximateNumberOfMessagesNotVisible", ".", ".", { "stat": "Average", "label": "InFlight" } ],
+          [ ".", "ApproximateAgeOfOldestMessage", ".", ".", { "stat": "Maximum", "yAxis": "right", "label": "Oldest (s)" } ]
+        ]
+      }
+    },
+
+    {
+      "type": "metric",
+      "x": 12,
+      "y": 14,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "region": "${region}",
+        "title": "SQS Dead-Letter Queue",
+        "view": "timeSeries",
+        "period": 60,
+        "metrics": [
+          [ "AWS/SQS", "ApproximateNumberOfMessagesVisible", "QueueName", "${dlq_name}", { "stat": "Average", "label": "DLQ Visible" } ],
+          [ ".", "ApproximateAgeOfOldestMessage", ".", ".", { "stat": "Maximum", "yAxis": "right", "label": "Oldest (s)" } ]
+        ]
+      }
+    },
+
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 20,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "region": "${region}",
+        "title": "DynamoDB Consumed Capacity",
+        "view": "timeSeries",
+        "period": 60,
+        "metrics": [
+          [ "AWS/DynamoDB", "ConsumedReadCapacityUnits", "TableName", "${ddb_quizzes}", { "stat": "Sum", "label": "quizzes RCU" } ],
+          [ "AWS/DynamoDB", "ConsumedWriteCapacityUnits", "TableName", "${ddb_quizzes}", { "stat": "Sum", "label": "quizzes WCU" } ],
+          [ "AWS/DynamoDB", "ConsumedReadCapacityUnits", "TableName", "${ddb_attempts}", { "stat": "Sum", "label": "attempts RCU" } ],
+          [ "AWS/DynamoDB", "ConsumedWriteCapacityUnits", "TableName", "${ddb_attempts}", { "stat": "Sum", "label": "attempts WCU" } ],
+          [ "AWS/DynamoDB", "ConsumedReadCapacityUnits", "TableName", "${ddb_exports}", { "stat": "Sum", "label": "exports RCU" } ],
+          [ "AWS/DynamoDB", "ConsumedWriteCapacityUnits", "TableName", "${ddb_exports}", { "stat": "Sum", "label": "exports WCU" } ]
+        ]
+      }
+    },
+
+    {
+      "type": "metric",
+      "x": 12,
+      "y": 20,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "region": "${region}",
+        "title": "X-Ray (API & Worker)",
+        "view": "timeSeries",
+        "period": 60,
+        "metrics": [
+          [ "AWS/XRay", "ErrorRate", "ServiceName", "${xray_api_service}", { "stat": "Average", "label": "api ErrorRate" } ],
+          [ "AWS/XRay", "FaultRate", "ServiceName", "${xray_api_service}", { "stat": "Average", "label": "api FaultRate" } ],
+          [ "AWS/XRay", "Latency", "ServiceName", "${xray_api_service}", { "stat": "Average", "yAxis": "right", "label": "api Latency" } ],
+          [ "AWS/XRay", "ErrorRate", "ServiceName", "${xray_worker_service}", { "stat": "Average", "label": "worker ErrorRate" } ],
+          [ "AWS/XRay", "FaultRate", "ServiceName", "${xray_worker_service}", { "stat": "Average", "label": "worker FaultRate" } ],
+          [ "AWS/XRay", "Latency", "ServiceName", "${xray_worker_service}", { "stat": "Average", "yAxis": "right", "label": "worker Latency" } ]
+        ]
+      }
+    },
+
+    {
+      "type": "log",
+      "x": 0,
+      "y": 26,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "region": "${region}",
+        "title": "API 5XX (Logs Insights)",
+        "query": "SOURCE '${log_group_api}' | fields @timestamp, req.method as method, req.url as url, res.statusCode as status, responseTime | filter status >= 500 | sort @timestamp desc | limit 20",
+        "view": "table"
+      }
+    },
+
+    {
+      "type": "log",
+      "x": 12,
+      "y": 26,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "region": "${region}",
+        "title": "Web Access Logs (JSON)",
+        "query": "SOURCE '${log_group_web}' | fields @timestamp, uri, status, request_time, remote_addr | sort @timestamp desc | limit 20",
+        "view": "table"
+      }
+    }
+  ]
+}

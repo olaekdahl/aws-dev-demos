@@ -46,7 +46,7 @@ class Program
         {
             ["UserId"] = userId,
             ["NoteId"] = noteId,
-            ["Note"] = "Inserted using Document API",
+            ["Note"] = "Hello!",
             ["Favorite"] = "true",
             ["Tags"] = tags,
             ["Metadata"] = new Document

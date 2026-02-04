@@ -1,0 +1,12 @@
+{
+  "name": "code-quiz",
+  "private": true,
+  "workspaces": [
+    "services/*"
+  ],
+  "scripts": {
+    "build": "npm run build -ws",
+    "test": "npm run test -ws",
+    "lint": "npm run lint -ws"
+  }
+}

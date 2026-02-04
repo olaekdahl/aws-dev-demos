@@ -1,0 +1,87 @@
+:root {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.4;
+  color: #111;
+  background: #f6f7fb;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.nav button {
+  padding: 8px 12px;
+}
+
+.card {
+  background: white;
+  border: 1px solid #e1e3ee;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 16px 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+label {
+  display: block;
+  margin: 10px 0;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #d7dbe8;
+  border-radius: 8px;
+}
+
+button {
+  cursor: pointer;
+  border: 1px solid #d7dbe8;
+  background: #fff;
+  padding: 10px 14px;
+  border-radius: 10px;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.question {
+  border-top: 1px solid #eceef6;
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.choice {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 6px 0;
+}
+
+.choice input[type="radio"] {
+  width: auto;
+  margin: 0;
+}
+
+.error {
+  color: #b00020;
+}

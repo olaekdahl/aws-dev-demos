@@ -1,0 +1,48 @@
+{
+  "name": "@code-quiz/api",
+  "version": "1.0.0",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "lint": "eslint . --ext .ts",
+    "test": "jest --runInBand"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.662.0",
+    "@aws-sdk/client-s3": "^3.662.0",
+    "@aws-sdk/client-sqs": "^3.662.0",
+    "@aws-sdk/lib-dynamodb": "^3.662.0",
+    "@aws-sdk/s3-request-presigner": "^3.662.0",
+    "aws-embedded-metrics": "^4.1.0",
+    "aws-xray-sdk-core": "^3.6.0",
+    "aws-xray-sdk-express": "^3.6.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "pino": "^9.3.2",
+    "pino-http": "^10.3.0",
+    "uuid": "^10.0.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.14",
+    "@types/supertest": "^6.0.2",
+    "@types/uuid": "^10.0.0",
+    "aws-sdk-client-mock": "^4.0.1",
+    "eslint": "^9.8.0",
+    "eslint-config-prettier": "^9.1.0",
+    "jest": "^29.7.0",
+    "prettier": "^3.3.3",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.6.3",
+    "globals": "^15.9.0",
+    "typescript-eslint": "^8.1.0"
+  }
+}
