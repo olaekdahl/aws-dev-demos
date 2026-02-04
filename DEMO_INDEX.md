@@ -1,0 +1,24 @@
+# Demo index
+
+- m03-aws-auth-and-profiles
+- m03-raw-s3-rest-call
+- m03-boto3-high-vs-low-s3
+- m04-iam-policy-evaluation-debug
+- m04-assume-role-demo
+- m05-s3-buckets-ops
+- m06-s3-objects-ops
+- m06-s3-multipart-upload
+- m06-s3-events-to-sqs
+- m07-dynamodb-crud-basics
+- m08-dynamodb-indexes-design
+- m08-dynamodb-throughput-and-waiters
+- m09-lambda-basics
+- m09-lambda-event-sources
+- m10-apigw-rest-lambda
+- m10-apigw-websocket-chat
+- m11-async-microservice-patterns
+- m11-eventbridge-integration-events
+- m12-cognito-userpool-auth
+- m13-sam-serverless-app
+- m14-cloudwatch-observability
+- m15-end-to-end-capstone

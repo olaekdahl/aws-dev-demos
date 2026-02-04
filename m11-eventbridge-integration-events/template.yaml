@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: awsdev eventbridge -> sqs
+
+Resources:
+  EventQueue:
+    Type: AWS::SQS::Queue
+
+  Rule:
+    Type: AWS::Events::Rule
+    Properties:
+      EventPattern:
+        source: [awsdev.orders]
+        detail-type: [OrderCreated]
+      Targets:
+        - Arn: !GetAtt EventQueue.Arn
+          Id: queueTarget
+
+  QueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues: [!Ref EventQueue]
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action: sqs:SendMessage
+            Resource: !GetAtt EventQueue.Arn
+
+Outputs:
+  QueueUrl:
+    Value: !Ref EventQueue
