@@ -1,0 +1,89 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "DynamoDB Table - CloudFormation JSON Template Example. Creates a DynamoDB table with configurable key schema and throughput. Demonstrates JSON template format and parameterization.",
+
+  "Parameters": {
+    "HashKeyElementName": {
+      "Description": "Name of the partition (hash) key attribute",
+      "Type": "String",
+      "AllowedPattern": "[a-zA-Z0-9]*",
+      "MinLength": "1",
+      "MaxLength": "255",
+      "ConstraintDescription": "Must contain only alphanumeric characters"
+    },
+    "HashKeyElementType": {
+      "Description": "Data type of the partition key (S=String, N=Number)",
+      "Type": "String",
+      "Default": "S",
+      "AllowedPattern": "[S|N]",
+      "MinLength": "1",
+      "MaxLength": "1",
+      "ConstraintDescription": "Must be either S (String) or N (Number)"
+    },
+    "ReadCapacityUnits": {
+      "Description": "Provisioned read capacity units (5-10000)",
+      "Type": "Number",
+      "Default": "5",
+      "MinValue": "5",
+      "MaxValue": "10000",
+      "ConstraintDescription": "Must be between 5 and 10000"
+    },
+    "WriteCapacityUnits": {
+      "Description": "Provisioned write capacity units (5-10000)",
+      "Type": "Number",
+      "Default": "5",
+      "MinValue": "5",
+      "MaxValue": "10000",
+      "ConstraintDescription": "Must be between 5 and 10000"
+    }
+  },
+
+  "Resources": {
+    "DynamoDBTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": { "Fn::Sub": "${AWS::StackName}-table" },
+        "AttributeDefinitions": [
+          {
+            "AttributeName": { "Ref": "HashKeyElementName" },
+            "AttributeType": { "Ref": "HashKeyElementType" }
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": { "Ref": "HashKeyElementName" },
+            "KeyType": "HASH"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": { "Ref": "ReadCapacityUnits" },
+          "WriteCapacityUnits": { "Ref": "WriteCapacityUnits" }
+        },
+        "Tags": [
+          {
+            "Key": "Environment",
+            "Value": "Demo"
+          },
+          {
+            "Key": "ManagedBy",
+            "Value": "CloudFormation"
+          }
+        ]
+      }
+    }
+  },
+
+  "Outputs": {
+    "TableName": {
+      "Description": "Name of the created DynamoDB table",
+      "Value": { "Ref": "DynamoDBTable" },
+      "Export": {
+        "Name": { "Fn::Sub": "${AWS::StackName}-TableName" }
+      }
+    },
+    "TableArn": {
+      "Description": "ARN of the created DynamoDB table",
+      "Value": { "Fn::GetAtt": ["DynamoDBTable", "Arn"] }
+    }
+  }
+}

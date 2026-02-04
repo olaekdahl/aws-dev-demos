@@ -1,0 +1,82 @@
+# .NET build directories
+bin/
+obj/
+debug/
+release/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.userprefs
+*.csproj.user
+*.dbmdl
+*.pfx
+*.publishsettings
+*.vscode
+
+# Logs and databases
+*.log
+*.ldf
+*.mdf
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+*.backup
+*.bak
+
+# Generated files
+*.nupkg
+*.snupkg
+*.g.dart
+*.i.dart
+
+# Config files
+appsettings*.json
+
+# IDE settings
+.vscode/
+.idea/
+*.code-workspace
+
+# Rider
+.idea/
+*.sln.iml
+
+# Windows-specific files
+Thumbs.db
+desktop.ini
+
+# macOS-specific files
+.DS_Store
+
+# Node.js dependencies (if any)
+node_modules/
+
+# Test result files
+TestResults/
+
+# Visual Studio Code workspace
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
+.vscode/*.code-snippets
+
+# ReSharper
+_ReSharper.Caches/
+
+# Azure
+*.azureactivitylog.json
+*.AzureConfiguration
+ServiceFabricBackup/
+
+# JetBrains Rider
+.idea/
+
+# Coverage
+*.coverage
+*.coveragexml
+coverage.opencover.xml

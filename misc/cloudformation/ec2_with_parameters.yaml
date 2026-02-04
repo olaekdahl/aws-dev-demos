@@ -1,0 +1,109 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  EC2 Instance with Parameters - CloudFormation Parameters Example
+  
+  Creates an EC2 instance with:
+  - Parameterized AMI ID (with validation)
+  - UserData script to install nginx
+  - Resource tags
+  
+  This template demonstrates:
+  - Parameters with AllowedPattern validation
+  - Fn::Ref for parameter references
+  - Fn::Base64 and !Sub for UserData scripts
+  - Resource tagging best practices
+  
+  Deploy:
+    aws cloudformation create-stack \
+      --stack-name ec2-with-params \
+      --template-body file://ec2_with_parameters.yaml \
+      --parameters ParameterKey=ImageId,ParameterValue=ami-0440d3b780d96b29d
+      
+  Check status:
+    aws cloudformation describe-stacks --stack-name ec2-with-params
+    
+  Delete:
+    aws cloudformation delete-stack --stack-name ec2-with-params
+    aws cloudformation wait stack-delete-complete --stack-name ec2-with-params
+
+Parameters:
+  ImageId:
+    Description: AMI ID for the EC2 instance (must start with 'ami-')
+    Type: AWS::EC2::Image::Id
+    AllowedPattern: "ami-.*"
+    ConstraintDescription: Must be a valid AMI ID starting with 'ami-'
+    
+  InstanceType:
+    Description: EC2 instance type
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - t2.small
+      - t2.medium
+      - t3.micro
+      - t3.small
+    ConstraintDescription: Must be a valid T2 or T3 instance type
+    
+  Environment:
+    Description: Environment tag for the instance
+    Type: String
+    Default: Development
+    AllowedValues:
+      - Development
+      - Staging
+      - Production
+
+Resources:
+  WebServerInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref ImageId
+      InstanceType: !Ref InstanceType
+      # UserData runs on first boot to configure the instance
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          set -e
+          
+          # Update system packages
+          yum update -y
+          
+          # Install and start nginx
+          amazon-linux-extras install nginx1 -y
+          systemctl start nginx
+          systemctl enable nginx
+          
+          # Create a simple index page
+          cat > /usr/share/nginx/html/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head><title>CloudFormation Demo</title></head>
+          <body>
+            <h1>Hello from CloudFormation!</h1>
+            <p>Stack: ${AWS::StackName}</p>
+            <p>Region: ${AWS::Region}</p>
+            <p>Environment: ${Environment}</p>
+          </body>
+          </html>
+          EOF
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-webserver'
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: ManagedBy
+          Value: CloudFormation
+
+Outputs:
+  InstanceId:
+    Description: The instance ID of the web server
+    Value: !Ref WebServerInstance
+    
+  PrivateIp:
+    Description: Private IP address of the web server
+    Value: !GetAtt WebServerInstance.PrivateIp
+    
+  PublicIp:
+    Description: Public IP address of the web server (if in public subnet)
+    Value: !GetAtt WebServerInstance.PublicIp

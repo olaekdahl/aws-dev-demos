@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  Simple EC2 Instance - Basic CloudFormation Example
+  
+  Creates a single t2.micro EC2 instance with a hardcoded AMI.
+  This is the simplest possible EC2 template for learning CloudFormation basics.
+  
+  Note: The AMI ID is region-specific. Update it for your target region.
+  
+  Deploy:
+    aws cloudformation create-stack \
+      --stack-name simple-ec2 \
+      --template-body file://ec2_simple.yaml
+      
+  Delete:
+    aws cloudformation delete-stack --stack-name simple-ec2
+
+Resources:
+  SimpleEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      # Amazon Linux 2023 AMI (us-east-1) - update for your region
+      ImageId: ami-0b09ffb6d8b58ca91
+      InstanceType: t2.micro
+      Tags:
+        - Key: Name
+          Value: simple-ec2-demo
