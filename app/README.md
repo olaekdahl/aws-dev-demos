@@ -11,6 +11,26 @@ It is designed to be:
 
 ---
 
+## AWS Services Used
+
+| Icon | Service | Purpose |
+|:----:|---------|---------|
+| <img src="../icons/Elastic-Container-Service.svg" width="40"> | **Amazon ECS** | Container orchestration for api, web, and worker services |
+| <img src="../icons/Fargate.svg" width="40"> | **AWS Fargate** | Serverless compute engine for containers |
+| <img src="../icons/Elastic-Container-Registry.svg" width="40"> | **Amazon ECR** | Private Docker container registry |
+| <img src="../icons/Elastic-Load-Balancing.svg" width="40"> | **Application Load Balancer** | HTTPS traffic distribution to ECS services |
+| <img src="../icons/Virtual-Private-Cloud.svg" width="40"> | **Amazon VPC** | Isolated network with public/private subnets across 2 AZs |
+| <img src="../icons/Route-53.svg" width="40"> | **Amazon Route 53** | DNS management for `code-quiz.io` domain |
+| <img src="../icons/Certificate-Manager.svg" width="40"> | **AWS Certificate Manager** | SSL/TLS certificates for HTTPS |
+| <img src="../icons/DynamoDB.svg" width="40"> | **Amazon DynamoDB** | NoSQL database for quizzes, attempts, and exports |
+| <img src="../icons/Simple-Storage-Service.svg" width="40"> | **Amazon S3** | Object storage for quiz exports and ALB access logs |
+| <img src="../icons/Simple-Queue-Service.svg" width="40"> | **Amazon SQS** | Message queue for async grading and export jobs |
+| <img src="../icons/Identity-and-Access-Management.svg" width="40"> | **AWS IAM** | Least-privilege task roles and GitHub OIDC |
+| <img src="../icons/CloudWatch.svg" width="40"> | **Amazon CloudWatch** | Logs, metrics, alarms, and dashboards |
+| <img src="../icons/X-Ray.svg" width="40"> | **AWS X-Ray** | Distributed tracing via daemon sidecar |
+
+---
+
 ## Architecture (high level)
 
 - **ALB (HTTPS)** terminates TLS using an ACM certificate for `code-quiz.io` and routes:
