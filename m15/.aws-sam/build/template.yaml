@@ -1,0 +1,154 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: awsdev capstone - production-ready event pipeline
+Globals:
+  Function:
+    Runtime: python3.12
+    Timeout: 15
+Resources:
+  Bucket:
+    Type: AWS::S3::Bucket
+  DeadLetterQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      MessageRetentionPeriod: 1209600
+  Queue:
+    Type: AWS::SQS::Queue
+    Properties:
+      VisibilityTimeout: 60
+      RedrivePolicy:
+        deadLetterTargetArn:
+          Fn::GetAtt:
+          - DeadLetterQueue
+          - Arn
+        maxReceiveCount: 3
+  QueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues:
+      - Ref: Queue
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: s3.amazonaws.com
+          Action: sqs:SendMessage
+          Resource:
+            Fn::GetAtt:
+            - Queue
+            - Arn
+          Condition:
+            ArnLike:
+              aws:SourceArn:
+                Fn::Sub: arn:aws:s3:::${Bucket}
+  BucketNotification:
+    Type: Custom::S3BucketNotification
+    DependsOn: QueuePolicy
+    Properties:
+      ServiceToken:
+        Fn::Sub: arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:cfn-s3-notification-handler
+  Table:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+  WorkerLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName:
+        Fn::Sub: /aws/lambda/${Worker}
+      RetentionInDays: 7
+  ApiLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName:
+        Fn::Sub: /aws/lambda/${Api}
+      RetentionInDays: 7
+  DLQAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName:
+        Fn::Sub: ${AWS::StackName}-dlq-messages
+      AlarmDescription: Messages in dead-letter queue indicate processing failures
+      Namespace: AWS/SQS
+      MetricName: ApproximateNumberOfMessagesVisible
+      Dimensions:
+      - Name: QueueName
+        Value:
+          Fn::GetAtt:
+          - DeadLetterQueue
+          - QueueName
+      Statistic: Sum
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+  Worker:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: Worker
+      Handler: worker.handler
+      Environment:
+        Variables:
+          TABLE_NAME:
+            Ref: Table
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Table
+      Events:
+        SQSEvent:
+          Type: SQS
+          Properties:
+            Queue:
+              Fn::GetAtt:
+              - Queue
+              - Arn
+            BatchSize: 5
+    Metadata:
+      SamResourceId: Worker
+  Api:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: Api
+      Handler: api.handler
+      Environment:
+        Variables:
+          TABLE_NAME:
+            Ref: Table
+      Policies:
+      - DynamoDBReadPolicy:
+          TableName:
+            Ref: Table
+      Events:
+        GetItem:
+          Type: Api
+          Properties:
+            Path: /items/{id}
+            Method: get
+        ListItems:
+          Type: Api
+          Properties:
+            Path: /items
+            Method: get
+    Metadata:
+      SamResourceId: Api
+Outputs:
+  BucketName:
+    Value:
+      Ref: Bucket
+  QueueUrl:
+    Value:
+      Ref: Queue
+  DLQUrl:
+    Value:
+      Ref: DeadLetterQueue
+  ApiUrl:
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod
+  TableName:
+    Value:
+      Ref: Table
