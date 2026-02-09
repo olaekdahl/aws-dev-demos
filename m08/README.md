@@ -14,15 +14,15 @@ Global Secondary Indexes, throughput management with exponential backoff, and TT
 
 ```bash
 # Run all demos
-python m08/run.py
+python3 m08/run.py
 
 # Run a specific demo
-python m08/run.py --demo gsi
-python m08/run.py --demo throughput
-python m08/run.py --demo ttl
+python3 m08/run.py --demo gsi
+python3 m08/run.py --demo throughput
+python3 m08/run.py --demo ttl
 
 # Clean up created tables
-python m08/run.py --cleanup
+python3 m08/run.py --cleanup
 ```
 
 ## AWS Services

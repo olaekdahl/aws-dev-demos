@@ -13,14 +13,14 @@ Automated Cognito User Pool setup, sign-up/sign-in flow with JWT decoding, and t
 
 ```bash
 # Run all demos
-python m12/run.py
+python3 m12/run.py
 
 # Run a specific demo
-python m12/run.py --demo signup-signin
-python m12/run.py --demo token-refresh
+python3 m12/run.py --demo signup-signin
+python3 m12/run.py --demo token-refresh
 
 # Clean up created User Pools
-python m12/run.py --cleanup
+python3 m12/run.py --cleanup
 ```
 
 ## FastAPI App

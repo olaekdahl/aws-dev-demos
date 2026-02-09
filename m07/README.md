@@ -13,14 +13,14 @@ Gaming leaderboard with queries, transactions, and conditional writes demonstrat
 
 ```bash
 # Run all demos
-python m07/run.py
+python3 m07/run.py
 
 # Run a specific demo
-python m07/run.py --demo leaderboard
-python m07/run.py --demo conditional
+python3 m07/run.py --demo leaderboard
+python3 m07/run.py --demo conditional
 
 # Clean up created tables
-python m07/run.py --cleanup
+python3 m07/run.py --cleanup
 ```
 
 ## AWS Services

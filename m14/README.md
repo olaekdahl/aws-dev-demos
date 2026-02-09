@@ -14,15 +14,15 @@ Publish custom metrics, create alarms, run Logs Insights queries, and build dash
 
 ```bash
 # Run all demos
-python m14/run.py
+python3 m14/run.py
 
 # Run a specific demo
-python m14/run.py --demo metrics
-python m14/run.py --demo logs
-python m14/run.py --demo dashboard
+python3 m14/run.py --demo metrics
+python3 m14/run.py --demo logs
+python3 m14/run.py --demo dashboard
 
 # Clean up alarms, dashboards, and log groups
-python m14/run.py --cleanup
+python3 m14/run.py --cleanup
 ```
 
 ## AWS Services

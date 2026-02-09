@@ -14,15 +14,15 @@ SNS/SQS fan-out, dead-letter queue recovery, and FIFO ordering guarantees.
 
 ```bash
 # Run all demos
-python m11/run.py
+python3 m11/run.py
 
 # Run a specific demo
-python m11/run.py --demo fanout
-python m11/run.py --demo dlq
-python m11/run.py --demo fifo
+python3 m11/run.py --demo fanout
+python3 m11/run.py --demo dlq
+python3 m11/run.py --demo fifo
 
 # Clean up created topics and queues
-python m11/run.py --cleanup
+python3 m11/run.py --cleanup
 ```
 
 ## SAM App
@@ -35,7 +35,7 @@ sam build --use-container
 sam deploy --guided
 
 # Then put a test event
-python m11/sam-eventbridge/put_event.py --region us-east-1
+python3 m11/sam-eventbridge/put_event.py --region us-east-1
 ```
 
 ## AWS Services

@@ -42,13 +42,13 @@ All scripts support `--profile` and `--region` arguments:
 
 ```bash
 # Use default credentials and region
-python s3_list_by_prefix.py --bucket my-bucket --prefix logs/
+python3 s3_list_by_prefix.py --bucket my-bucket --prefix logs/
 
 # Specify AWS profile
-python ec2_list_instances.py --profile production
+python3 ec2_list_instances.py --profile production
 
 # Specify region
-python dynamodb_create_table_sync.py --region us-west-2
+python3 dynamodb_create_table_sync.py --region us-west-2
 ```
 
 ## Key Concepts Demonstrated

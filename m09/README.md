@@ -14,15 +14,15 @@ Deploy Lambda functions, measure cold starts, and explore error handling pattern
 
 ```bash
 # Run all demos
-python m09/run.py
+python3 m09/run.py
 
 # Run a specific demo
-python m09/run.py --demo deploy
-python m09/run.py --demo cold-start
-python m09/run.py --demo errors
+python3 m09/run.py --demo deploy
+python3 m09/run.py --demo cold-start
+python3 m09/run.py --demo errors
 
 # Clean up Lambda functions and IAM roles
-python m09/run.py --cleanup
+python3 m09/run.py --cleanup
 ```
 
 ## SAM App

@@ -13,14 +13,14 @@ Create S3 buckets with lifecycle policies and explore versioning with time-trave
 
 ```bash
 # Run all demos
-python m05/run.py
+python3 m05/run.py
 
 # Run a specific demo
-python m05/run.py --demo lifecycle
-python m05/run.py --demo time-travel
+python3 m05/run.py --demo lifecycle
+python3 m05/run.py --demo time-travel
 
 # Clean up created buckets
-python m05/run.py --cleanup
+python3 m05/run.py --cleanup
 ```
 
 ## AWS Services

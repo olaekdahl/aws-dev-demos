@@ -57,9 +57,9 @@ pip install -r requirements.txt
 pip install -e .
 
 # 3. Run any module
-python m03/run.py                # run all m03 demos
-python m07/run.py --demo leaderboard   # run a specific demo
-python m05/run.py --cleanup      # tear down tracked resources
+python3 m03/run.py                # run all m03 demos
+python3 m07/run.py --demo leaderboard   # run a specific demo
+python3 m05/run.py --cleanup      # tear down tracked resources
 ```
 
 ### CLI Options (all optional)

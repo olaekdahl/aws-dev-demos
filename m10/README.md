@@ -30,7 +30,7 @@ sam deploy --guided
 
 ```bash
 # Test the REST API (after deploying sam-rest-api)
-python m10/run.py --demo test-rest
+python3 m10/run.py --demo test-rest
 
 # Cleanup -- use sam delete for each app
 cd m10/sam-rest-api && sam delete

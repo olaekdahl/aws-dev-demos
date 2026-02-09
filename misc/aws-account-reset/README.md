@@ -49,7 +49,7 @@ export AWS_PROFILE=your-profile
 Always run a dry run first to see what would be deleted:
 
 ```bash
-python reset_aws_account.py --dry-run
+python3 reset_aws_account.py --dry-run
 ```
 
 This will list all resources that would be deleted without actually deleting anything.
@@ -59,7 +59,7 @@ This will list all resources that would be deleted without actually deleting any
 After reviewing the dry run output, execute the deletion:
 
 ```bash
-python reset_aws_account.py --execute
+python3 reset_aws_account.py --execute
 ```
 
 You'll have 10 seconds to cancel (Ctrl+C) after starting.
@@ -67,8 +67,8 @@ You'll have 10 seconds to cancel (Ctrl+C) after starting.
 ### Optional: Limit to Specific Regions
 
 ```bash
-python reset_aws_account.py --dry-run --regions us-east-1 us-west-2
-python reset_aws_account.py --execute --regions us-east-1 us-west-2
+python3 reset_aws_account.py --dry-run --regions us-east-1 us-west-2
+python3 reset_aws_account.py --execute --regions us-east-1 us-west-2
 ```
 
 ## Customization
