@@ -8,6 +8,7 @@ S3 object operations: CRUD lifecycle, multipart uploads, event notifications, pr
 |------|-------------|
 | `object-crud` | Full object lifecycle -- put, head, get, list, delete |
 | `multipart` | Multipart upload with ASCII progress bar |
+| `multipart-parallel` | Parallel multipart upload using TransferConfig |
 | `event-pipeline` | Creates S3 + SQS, uploads a file, polls for the event notification |
 | `presigned` | Generates presigned PUT/GET URLs, shows URL anatomy and expiration |
 | `encryption` | Uploads same object with SSE-S3 and SSE-KMS, compares encryption headers |
@@ -21,6 +22,7 @@ python3 m06/run.py
 # Run a specific demo
 python3 m06/run.py --demo object-crud
 python3 m06/run.py --demo multipart
+python3 m06/run.py --demo multipart-parallel
 python3 m06/run.py --demo event-pipeline
 python3 m06/run.py --demo presigned
 python3 m06/run.py --demo encryption

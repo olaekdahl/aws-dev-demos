@@ -53,7 +53,7 @@ def run(args):
 
     put_url = s3.generate_presigned_url(
         "put_object",
-        Params={"Bucket": bucket_name, "Key": object_key},
+        Params={"Bucket": bucket_name, "Key": object_key, "ContentType": "text/plain"},
         ExpiresIn=EXPIRY_SECONDS,
     )
 

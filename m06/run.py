@@ -12,6 +12,7 @@ from common import (
 
 from demos.object_crud import run as object_crud_demo
 from demos.multipart_upload import run as multipart_upload_demo
+from demos.multipart_parallel import run as multipart_parallel_demo
 from demos.event_pipeline import run as event_pipeline_demo
 from demos.presigned_urls import run as presigned_urls_demo
 from demos.encryption_comparison import run as encryption_comparison_demo
@@ -21,6 +22,7 @@ MODULE = "m06"
 DEMOS = {
     "object-crud": object_crud_demo,
     "multipart": multipart_upload_demo,
+    "multipart-parallel": multipart_parallel_demo,
     "event-pipeline": event_pipeline_demo,
     "presigned": presigned_urls_demo,
     "encryption": encryption_comparison_demo,
@@ -29,6 +31,7 @@ DEMOS = {
 DEMO_INFO = {
     "object-crud": "S3 object lifecycle (put, head, get, list, delete)",
     "multipart": "multipart upload with progress bar",
+    "multipart-parallel": "parallel multipart upload using TransferConfig",
     "event-pipeline": "S3 event notifications to SQS",
     "presigned": "presigned PUT and GET URLs",
     "encryption": "SSE-S3 vs SSE-KMS encryption comparison",

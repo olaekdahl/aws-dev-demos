@@ -91,6 +91,7 @@ def run(args):
     result = s3.complete_multipart_upload(
         Bucket=bucket_name,
         Key=object_key,
+        UploadId=upload_id,
         MultipartUpload={"Parts": parts},
     )
     kv("Location", result.get("Location", "(none)"))
