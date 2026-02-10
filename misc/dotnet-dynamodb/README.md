@@ -1,11 +1,11 @@
 # .NET DynamoDB Demo
 
-Demonstrates DynamoDB operations in C# using the AWS SDK for .NET, comparing the Document Model API versus the Low-Level API.
+Demonstrates DynamoDB operations in C# using the AWS SDK for .NET, comparing the three programming models: Object Persistence, Document Model, and Low-Level API.
 
 ## Prerequisites
 
 ```bash
-# Install .NET 8 SDK
+# Install .NET 9 SDK
 # See: https://dotnet.microsoft.com/download
 
 # Restore NuGet packages
@@ -17,57 +17,94 @@ aws configure
 
 ## Quick Start
 
+Build the project:
 ```bash
-# Build the project
 dotnet build
+```
 
-# Run the demo
+Run the demo:
+```bash
 dotnet run
 ```
 
 ## What This Demonstrates
 
-### Two API Styles
+### Three API Levels
 
-1. **Document Model API** (High-Level)
-   - Object-oriented approach using `Document` class
+1. **Object Persistence Model** (Highest Level)
+   - ORM-like approach with POCO classes
+   - Uses `DynamoDBContext` and attributes like `[DynamoDBTable]`, `[DynamoDBHashKey]`
+   - Automatic serialization/deserialization
+   - Best for: Domain-driven design, clean code
+
+2. **Document Model API** (Medium Level)
+   - JSON-like approach using `Document` class
+   - Flexible schema, schemaless operations
    - Automatic type conversion
-   - Cleaner syntax for most use cases
+   - Best for: Dynamic schemas, rapid prototyping
 
-2. **Low-Level API**
-   - Direct access to DynamoDB operations
-   - Full control over request/response
-   - Uses `AttributeValue` dictionaries
+3. **Low-Level API** (Lowest Level)
+   - Direct access using `PutItemRequest`, `QueryRequest`, etc.
+   - Full control over `AttributeValue` dictionaries
+   - Required for transactions, batch operations
+   - Best for: Performance optimization, advanced features
 
 ### Operations Covered
 
 - Creating a DynamoDB table
-- Inserting items with complex attributes (lists, maps)
+- Inserting items with complex attributes (lists, maps, nested objects)
 - Querying by partition key
-- Waiting for table creation
+- Comparing all three programming models
 
 ## Code Structure
 
 ```csharp
-// Document Model API - cleaner syntax
+// ═══════════════════════════════════════════════════════════════════
+// 1. Object Persistence Model - ORM-like with POCOs
+// ═══════════════════════════════════════════════════════════════════
+[DynamoDBTable("Notes")]
+public class Note
+{
+    [DynamoDBHashKey]
+    public int UserId { get; set; }
+
+    [DynamoDBRangeKey]
+    public long NoteId { get; set; }
+
+    [DynamoDBProperty]
+    public string? Content { get; set; }
+}
+
+var context = new DynamoDBContext(client);
+var note = new Note { UserId = 1, NoteId = 123, Content = "Hello!" };
+await context.SaveAsync(note);
+
+// Query returns strongly-typed objects
+var notes = await context.QueryAsync<Note>(userId).GetRemainingAsync();
+
+// ═══════════════════════════════════════════════════════════════════
+// 2. Document Model API - JSON-like, flexible schema
+// ═══════════════════════════════════════════════════════════════════
 var table = Table.LoadTable(client, tableName);
 var doc = new Document
 {
     ["UserId"] = userId,
     ["NoteId"] = noteId,
-    ["Note"] = "My note content",
+    ["Content"] = "My note content",
     ["Tags"] = new DynamoDBList { "tag1", "tag2" }
 };
 await table.PutItemAsync(doc);
 
-// Low-Level API - more control
+// ═══════════════════════════════════════════════════════════════════
+// 3. Low-Level API - Full control
+// ═══════════════════════════════════════════════════════════════════
 var request = new PutItemRequest
 {
     TableName = tableName,
     Item = new Dictionary<string, AttributeValue>
     {
         { "UserId", new AttributeValue { N = userId.ToString() } },
-        { "Note", new AttributeValue { S = "My note" } }
+        { "Content", new AttributeValue { S = "My note" } }
     }
 };
 await client.PutItemAsync(request);
@@ -84,16 +121,16 @@ Table: Notes
 ## Dependencies
 
 - AWSSDK.DynamoDBv2 (NuGet)
-- .NET 8.0
+- .NET 9.0
 
 ## When to Use Each API
 
-| Document Model | Low-Level API |
-|---------------|---------------|
-| CRUD operations | Complex transactions |
-| Rapid development | Batch operations |
-| Type safety | Fine-grained control |
-| Cleaner code | Performance optimization |
+| Object Persistence | Document Model | Low-Level API |
+|-------------------|----------------|---------------|
+| Domain entities | Dynamic schemas | Transactions |
+| Clean architecture | Rapid prototyping | Batch operations |
+| Type safety | Flexible attributes | Fine-grained control |
+| CRUD operations | JSON-like access | Performance tuning |
 
 ## Notes
 

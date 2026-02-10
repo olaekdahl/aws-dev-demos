@@ -7,9 +7,9 @@
 | [m03](m03/) | Identity & Auth | `whoami` `client-vs-resource` `sigv4` | N/A (read-only) |
 | [m04](m04/) | IAM | `assume-role` `detective` `policy-simulator` | `--cleanup` |
 | [m05](m05/) | S3 Buckets | `lifecycle` `time-travel` | `--cleanup` |
-| [m06](m06/) | S3 Objects | `object-crud` `multipart` `event-pipeline` `presigned` `encryption` | `--cleanup` |
+| [m06](m06/) | S3 Objects | `object-crud` `multipart` `multipart-parallel` `event-pipeline` `presigned` `encryption` | `--cleanup` |
 | [m07](m07/) | DynamoDB CRUD | `leaderboard` `conditional` | `--cleanup` |
-| [m08](m08/) | DynamoDB Advanced | `gsi` `throughput` `ttl` | `--cleanup` |
+| [m08](m08/) | DynamoDB Advanced | `gsi` `throughput` `ttl` `query-scan` | `--cleanup` |
 | [m09](m09/) | Lambda | `deploy` `cold-start` `errors` | `--cleanup` |
 | [m10](m10/) | API Gateway | `test-rest` + SAM apps | `sam delete` |
 | [m11](m11/) | Async Patterns | `fanout` `dlq` `fifo` + SAM EventBridge | `--cleanup` / `sam delete` |
@@ -22,16 +22,16 @@
 
 ```bash
 # Run all demos in a module
-python m03/run.py
+python3 m03/run.py
 
 # Run a specific demo
-python m07/run.py --demo leaderboard
+python3 m07/run.py --demo leaderboard
 
 # Clean up resources created by a module
-python m05/run.py --cleanup
+python3 m05/run.py --cleanup
 
 # Use a specific AWS profile and region
-python m04/run.py --profile dev --region eu-west-1
+python3 m04/run.py --profile dev --region eu-west-1
 ```
 
 ## SAM Apps

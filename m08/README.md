@@ -9,6 +9,7 @@ Global Secondary Indexes, throughput management with exponential backoff, and TT
 | `gsi` | Creates a table with a GSI, seeds data, shows how the GSI enables an alternate access pattern |
 | `throughput` | Writes against a provisioned table with exponential backoff, shows real-time colored counters for successes/retries/throttles |
 | `ttl` | Creates a table with TTL enabled, inserts items with various expiry times, polls to show items disappearing |
+| `query-scan` | Compares Query vs Scan operations, shows RCU cost differences |
 
 ## Usage
 
@@ -26,6 +27,9 @@ python3 m08/run.py --demo throughput
 ```
 ```bash
 python3 m08/run.py --demo ttl
+```
+```bash
+python3 m08/run.py --demo query-scan
 ```
 
 Clean up created tables:
