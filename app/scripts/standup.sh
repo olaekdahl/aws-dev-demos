@@ -48,7 +48,7 @@ TF_STATE_BUCKET=$(terraform -chdir=infra/terraform/bootstrap output -raw tfstate
 TF_LOCK_TABLE=$(terraform -chdir=infra/terraform/bootstrap output -raw terraform_lock_table_name)
 
 echo "==> Terraform app init (remote backend)..."
-terraform -chdir=infra/terraform/app init -upgrade \
+terraform -chdir=infra/terraform/app init -upgrade -reconfigure \
   -backend-config="bucket=${TF_STATE_BUCKET}" \
   -backend-config="key=${TF_STATE_KEY}" \
   -backend-config="region=${AWS_REGION}" \

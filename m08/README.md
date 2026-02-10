@@ -10,6 +10,7 @@ Global Secondary Indexes, throughput management with exponential backoff, and TT
 | `throughput` | Writes against a provisioned table with exponential backoff, shows real-time colored counters for successes/retries/throttles |
 | `ttl` | Creates a table with TTL enabled, inserts items with various expiry times, polls to show items disappearing |
 | `query-scan` | Compares Query vs Scan operations, shows RCU cost differences |
+| `offset` | Shows strategies to mimic SQL OFFSET: cursor pagination, page token caching, and skip-to-page |
 
 ## Usage
 
@@ -30,6 +31,9 @@ python3 m08/run.py --demo ttl
 ```
 ```bash
 python3 m08/run.py --demo query-scan
+```
+```bash
+python3 m08/run.py --demo offset
 ```
 
 Clean up created tables:

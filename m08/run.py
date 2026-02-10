@@ -14,12 +14,14 @@ from demos.gsi_access_patterns import run as gsi_demo
 from demos.throughput_retry import run as throughput_demo
 from demos.ttl_expiring_data import run as ttl_demo
 from demos.query_vs_scan import run as query_scan_demo
+from demos.offset_pagination import run as offset_demo
 
 DEMOS = {
     "gsi": gsi_demo,
     "throughput": throughput_demo,
     "ttl": ttl_demo,
     "query-scan": query_scan_demo,
+    "offset": offset_demo,
 }
 
 DEMO_INFO = {
@@ -27,6 +29,7 @@ DEMO_INFO = {
     "throughput": "exponential backoff under throttling",
     "ttl": "auto-expiring data with TTL",
     "query-scan": "Query vs Scan performance comparison",
+    "offset": "mimicking SQL OFFSET for page access",
 }
 
 
