@@ -12,16 +12,24 @@ SNS/SQS fan-out, dead-letter queue recovery, and FIFO ordering guarantees.
 
 ## Usage
 
+Run all demos:
 ```bash
-# Run all demos
 python3 m11/run.py
+```
 
-# Run a specific demo
+Run a specific demo:
+```bash
 python3 m11/run.py --demo fanout
+```
+```bash
 python3 m11/run.py --demo dlq
+```
+```bash
 python3 m11/run.py --demo fifo
+```
 
-# Clean up created topics and queues
+Clean up created topics and queues:
+```bash
 python3 m11/run.py --cleanup
 ```
 
@@ -33,8 +41,10 @@ EventBridge integration demo:
 cd m11/sam-eventbridge
 sam build --use-container
 sam deploy --guided
+```
 
-# Then put a test event
+Then put a test event:
+```bash
 python3 m11/sam-eventbridge/put_event.py --region us-east-1
 ```
 

@@ -12,16 +12,24 @@ Global Secondary Indexes, throughput management with exponential backoff, and TT
 
 ## Usage
 
+Run all demos:
 ```bash
-# Run all demos
 python3 m08/run.py
+```
 
-# Run a specific demo
+Run a specific demo:
+```bash
 python3 m08/run.py --demo gsi
+```
+```bash
 python3 m08/run.py --demo throughput
+```
+```bash
 python3 m08/run.py --demo ttl
+```
 
-# Clean up created tables
+Clean up created tables:
+```bash
 python3 m08/run.py --cleanup
 ```
 

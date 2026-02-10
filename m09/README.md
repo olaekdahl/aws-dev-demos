@@ -12,16 +12,24 @@ Deploy Lambda functions, measure cold starts, and explore error handling pattern
 
 ## Usage
 
+Run all demos:
 ```bash
-# Run all demos
 python3 m09/run.py
+```
 
-# Run a specific demo
+Run a specific demo:
+```bash
 python3 m09/run.py --demo deploy
+```
+```bash
 python3 m09/run.py --demo cold-start
+```
+```bash
 python3 m09/run.py --demo errors
+```
 
-# Clean up Lambda functions and IAM roles
+Clean up Lambda functions and IAM roles:
+```bash
 python3 m09/run.py --cleanup
 ```
 

@@ -11,15 +11,21 @@ Automated Cognito User Pool setup, sign-up/sign-in flow with JWT decoding, and t
 
 ## Usage
 
+Run all demos:
 ```bash
-# Run all demos
 python3 m12/run.py
+```
 
-# Run a specific demo
+Run a specific demo:
+```bash
 python3 m12/run.py --demo signup-signin
+```
+```bash
 python3 m12/run.py --demo token-refresh
+```
 
-# Clean up created User Pools
+Clean up created User Pools:
+```bash
 python3 m12/run.py --cleanup
 ```
 

@@ -12,16 +12,24 @@ Publish custom metrics, create alarms, run Logs Insights queries, and build dash
 
 ## Usage
 
+Run all demos:
 ```bash
-# Run all demos
 python3 m14/run.py
+```
 
-# Run a specific demo
+Run a specific demo:
+```bash
 python3 m14/run.py --demo metrics
+```
+```bash
 python3 m14/run.py --demo logs
+```
+```bash
 python3 m14/run.py --demo dashboard
+```
 
-# Clean up alarms, dashboards, and log groups
+Clean up alarms, dashboards, and log groups:
+```bash
 python3 m14/run.py --cleanup
 ```
 

@@ -18,11 +18,13 @@ sam deploy --guided
 
 ## Usage
 
+Test the deployed shortener:
 ```bash
-# Test the deployed shortener
 python3 m13/run.py --demo test
+```
 
-# Cleanup
+Cleanup:
+```bash
 cd m13 && sam delete
 ```
 

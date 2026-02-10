@@ -12,19 +12,29 @@ Create and assume IAM roles, investigate AccessDenied errors, and simulate permi
 
 ## Usage
 
+Run all demos:
 ```bash
-# Run all demos
 python3 m04/run.py
+```
 
-# Run a specific demo
+Run a specific demo:
+```bash
 python3 m04/run.py --demo assume-role
+```
+```bash
 python3 m04/run.py --demo detective
+```
+```bash
 python3 m04/run.py --demo policy-simulator
+```
 
-# Use an existing role instead of creating one
+Use an existing role instead of creating one:
+```bash
 python3 m04/run.py --demo assume-role --role-arn arn:aws:iam::123456789012:role/MyRole
+```
 
-# Clean up created IAM roles
+Clean up created IAM roles:
+```bash
 python3 m04/run.py --cleanup
 ```
 

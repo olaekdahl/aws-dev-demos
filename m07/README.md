@@ -11,15 +11,21 @@ Gaming leaderboard with queries, transactions, and conditional writes demonstrat
 
 ## Usage
 
+Run all demos:
 ```bash
-# Run all demos
 python3 m07/run.py
+```
 
-# Run a specific demo
+Run a specific demo:
+```bash
 python3 m07/run.py --demo leaderboard
+```
+```bash
 python3 m07/run.py --demo conditional
+```
 
-# Clean up created tables
+Clean up created tables:
+```bash
 python3 m07/run.py --cleanup
 ```
 

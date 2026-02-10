@@ -15,19 +15,33 @@ S3 object operations: CRUD lifecycle, multipart uploads, event notifications, pr
 
 ## Usage
 
+Run all demos:
 ```bash
-# Run all demos
 python3 m06/run.py
+```
 
-# Run a specific demo
+Run a specific demo:
+```bash
 python3 m06/run.py --demo object-crud
+```
+```bash
 python3 m06/run.py --demo multipart
+```
+```bash
 python3 m06/run.py --demo multipart-parallel
+```
+```bash
 python3 m06/run.py --demo event-pipeline
+```
+```bash
 python3 m06/run.py --demo presigned
+```
+```bash
 python3 m06/run.py --demo encryption
+```
 
-# Clean up created buckets and queues
+Clean up created buckets and queues:
+```bash
 python3 m06/run.py --cleanup
 ```
 

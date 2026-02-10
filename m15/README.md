@@ -18,11 +18,13 @@ sam deploy --guided
 
 ## Usage
 
+Test the deployed pipeline:
 ```bash
-# Test the deployed pipeline
 python3 m15/run.py --demo test
+```
 
-# Cleanup
+Cleanup:
+```bash
 cd m15 && sam delete
 ```
 

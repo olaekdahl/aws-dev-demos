@@ -12,13 +12,19 @@ Explore the AWS credential chain, compare boto3's client vs resource APIs, and m
 
 ## Usage
 
+Run all demos:
 ```bash
-# Run all demos
 python3 m03/run.py
+```
 
-# Run a specific demo
+Run a specific demo:
+```bash
 python3 m03/run.py --demo whoami
+```
+```bash
 python3 m03/run.py --demo client-vs-resource
+```
+```bash
 python3 m03/run.py --demo sigv4
 ```
 

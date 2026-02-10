@@ -28,12 +28,16 @@ sam deploy --guided
 
 ## Usage
 
+Test the REST API (after deploying sam-rest-api):
 ```bash
-# Test the REST API (after deploying sam-rest-api)
 python3 m10/run.py --demo test-rest
+```
 
-# Cleanup -- use sam delete for each app
+Cleanup -- use sam delete for each app:
+```bash
 cd m10/sam-rest-api && sam delete
+```
+```bash
 cd m10/sam-websocket-chat && sam delete
 ```
 
