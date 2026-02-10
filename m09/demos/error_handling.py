@@ -44,15 +44,10 @@ ERROR_HANDLER_CODE = textwrap.dedent("""\
             raise ValueError("Intentional demo exception from Lambda handler")
 
         elif action == "oom":
-            # Simulate a very large response description (not actual OOM)
-            big = "x" * (5 * 1024 * 1024)  # 5 MB string
-            return {
-                "statusCode": 200,
-                "body": json.dumps({
-                    "message": "Generated large payload",
-                    "payload_size_bytes": len(big),
-                }),
-            }
+            # Allocate more memory than function limit (128 MB) to trigger OOM
+            chunks = []
+            while True:
+                chunks.append("x" * (10 * 1024 * 1024))  # 10 MB per chunk
 
         else:
             return {
@@ -175,7 +170,7 @@ def run(args):
         ("succeed", "Normal success response"),
         ("timeout", "Exceeds 5 s timeout"),
         ("exception", "Raises ValueError"),
-        ("oom", "Large payload generation"),
+        ("oom", "Exceeds 128 MB memory limit"),
     ]
 
     scenario_results = []
