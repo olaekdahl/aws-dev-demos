@@ -10,6 +10,7 @@ WORKDIR /app
 COPY package.json ./
 COPY --from=deps /app/node_modules ./node_modules
 COPY index.html vite.config.ts tsconfig.json vitest.config.ts ./
+COPY tailwind.config.js postcss.config.js ./
 COPY public ./public
 COPY src ./src
 RUN npm run build

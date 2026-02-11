@@ -7,6 +7,7 @@ import { ExportsRepository } from "../repositories/exports";
 import { JobsQueue } from "../aws/jobsQueue";
 import { Quiz } from "../models";
 import { putCountMetric } from "../observability/metrics";
+import { requireAuth, isCognitoConfigured } from "../middleware/auth";
 
 const createQuizSchema = z.object({
   title: z.string().min(3).max(120),
@@ -46,7 +47,10 @@ export function quizzesRoutes(deps: {
     res.json({ items });
   });
 
-  router.post("/", async (req, res) => {
+  // Conditionally apply auth middleware for creating quizzes
+  const createQuizMiddleware = isCognitoConfigured() ? [requireAuth] : [];
+
+  router.post("/", ...createQuizMiddleware, async (req, res) => {
     const body = createQuizSchema.parse(req.body);
     const now = new Date().toISOString();
 
@@ -59,7 +63,8 @@ export function quizzesRoutes(deps: {
         choices: q.choices,
         answerIndex: Math.min(q.answerIndex, q.choices.length - 1)
       })),
-      createdAt: now
+      createdAt: now,
+      createdBy: req.user?.sub,
     };
 
     await deps.quizzesRepo.putQuiz(quiz);

@@ -1,11 +1,23 @@
 import type { Attempt, ExportJob, Quiz } from "./types";
+import { getAccessToken } from "./auth";
 
-async function http<T>(path: string, options?: RequestInit): Promise<T> {
+async function http<T>(path: string, options?: RequestInit & { auth?: boolean }): Promise<T> {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    ...((options?.headers as Record<string, string>) || {}),
+  };
+
+  // Add auth token if requested
+  if (options?.auth) {
+    const token = await getAccessToken();
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+  }
+
   const res = await fetch(path, {
-    headers: {
-      "Content-Type": "application/json"
-    },
-    ...options
+    ...options,
+    headers,
   });
 
   if (!res.ok) {
@@ -23,7 +35,7 @@ export async function createQuiz(input: {
   title: string;
   questions: Array<{ prompt: string; choices: string[]; answerIndex: number }>;
 }): Promise<{ quiz: Quiz }> {
-  return http("/api/quizzes", { method: "POST", body: JSON.stringify(input) });
+  return http("/api/quizzes", { method: "POST", body: JSON.stringify(input), auth: true });
 }
 
 export async function getQuiz(quizId: string): Promise<{ quiz: Quiz }> {

@@ -24,6 +24,11 @@ const schema = z.object({
   S3_BUCKET: z.string().min(1),
   SQS_QUEUE_URL: z.string().min(1),
 
+  // Cognito configuration
+  COGNITO_USER_POOL_ID: z.string().optional(),
+  COGNITO_CLIENT_ID: z.string().optional(),
+  COGNITO_REGION: z.string().optional(),
+
   XRAY_DISABLED: z.string().optional(),
   SERVICE_NAME: z.string().default("code-quiz-api")
 });

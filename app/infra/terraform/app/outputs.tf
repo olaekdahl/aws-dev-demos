@@ -55,3 +55,22 @@ output "cloudwatch_dashboard_url" {
   value       = "https://${var.aws_region}.console.aws.amazon.com/cloudwatch/home?region=${var.aws_region}#dashboards:name=${aws_cloudwatch_dashboard.main.dashboard_name}"
   description = "Convenience link to the dashboard in the AWS Console."
 }
+
+# -----------------------------------------------------------------------------
+# Cognito outputs
+# -----------------------------------------------------------------------------
+
+output "cognito_user_pool_id" {
+  value       = aws_cognito_user_pool.main.id
+  description = "Cognito User Pool ID."
+}
+
+output "cognito_user_pool_client_id" {
+  value       = aws_cognito_user_pool_client.web.id
+  description = "Cognito User Pool Client ID for the web app."
+}
+
+output "cognito_region" {
+  value       = var.aws_region
+  description = "AWS region where Cognito is deployed."
+}

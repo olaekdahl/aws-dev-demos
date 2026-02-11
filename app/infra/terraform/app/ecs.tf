@@ -39,7 +39,10 @@ resource "aws_ecs_task_definition" "api" {
         { name = "DDB_TABLE_EXPORTS", value = aws_dynamodb_table.exports.name },
         { name = "S3_BUCKET", value = aws_s3_bucket.exports.bucket },
         { name = "SQS_QUEUE_URL", value = aws_sqs_queue.jobs.url },
-        { name = "AWS_XRAY_DAEMON_ADDRESS", value = "127.0.0.1:2000" }
+        { name = "AWS_XRAY_DAEMON_ADDRESS", value = "127.0.0.1:2000" },
+        { name = "COGNITO_USER_POOL_ID", value = aws_cognito_user_pool.main.id },
+        { name = "COGNITO_CLIENT_ID", value = aws_cognito_user_pool_client.web.id },
+        { name = "COGNITO_REGION", value = var.aws_region }
       ]
       healthCheck = {
         command     = ["CMD-SHELL", "node -e \"require('http').get('http://localhost:3000/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))\""]

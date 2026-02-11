@@ -10,6 +10,7 @@ export type Quiz = {
   title: string;
   questions: QuizQuestion[];
   createdAt: string;
+  createdBy?: string;
 };
 
 export type AttemptAnswer = {

@@ -1,87 +1,237 @@
-:root {
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  line-height: 1.4;
-  color: #111;
-  background: #f6f7fb;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom base styles */
+@layer base {
+  :root {
+    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f64f59 100%);
+    --gradient-secondary: linear-gradient(135deg, #12c2e9 0%, #c471ed 50%, #f64f59 100%);
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    --glass-border: rgba(255, 255, 255, 0.25);
+  }
+
+  .dark {
+    --glass-bg: rgba(17, 24, 39, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.1);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply antialiased;
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 25%, #4c1d95 50%, #581c87 75%, #831843 100%);
+    min-height: 100vh;
+  }
+
+  .dark body {
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #1a1a2e 100%);
+  }
 }
 
-.container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 16px;
+/* Glassmorphism components */
+@layer components {
+  .glass {
+    @apply relative overflow-hidden;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--glass-border);
+  }
+
+  .glass-card {
+    @apply glass rounded-2xl p-6 shadow-glass;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+  }
+
+  .dark .glass-card {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+  }
+
+  .glass-card::before {
+    content: '';
+    @apply absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      transparent 50%
+    );
+    pointer-events: none;
+  }
+
+  .glass-card:hover::before {
+    @apply opacity-100;
+  }
+
+  .btn-primary {
+    @apply relative px-6 py-3 rounded-xl font-semibold text-white overflow-hidden transition-all duration-300;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .btn-primary::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    background: linear-gradient(135deg, #764ba2 0%, #f64f59 100%);
+  }
+
+  .btn-primary:hover::before {
+    @apply opacity-100;
+  }
+
+  .btn-primary:hover {
+    @apply transform -translate-y-0.5 shadow-neon;
+  }
+
+  .btn-primary:active {
+    @apply transform translate-y-0;
+  }
+
+  .btn-primary:disabled {
+    @apply opacity-50 cursor-not-allowed transform-none shadow-none;
+  }
+
+  .btn-primary span {
+    @apply relative z-10;
+  }
+
+  .btn-secondary {
+    @apply glass px-6 py-3 rounded-xl font-semibold text-white/90 transition-all duration-300;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-secondary:hover {
+    @apply border-white/40 bg-white/20 transform -translate-y-0.5;
+  }
+
+  .btn-secondary:active {
+    @apply transform translate-y-0;
+  }
+
+  .input-glass {
+    @apply w-full px-4 py-3 rounded-xl text-white placeholder-white/50 transition-all duration-300;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+  }
+
+  .input-glass:focus {
+    @apply outline-none ring-2 ring-purple-400/50 border-purple-400/50;
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .input-glass::placeholder {
+    @apply text-white/40;
+  }
+
+  /* Animated gradient border */
+  .gradient-border {
+    @apply relative;
+  }
+
+  .gradient-border::before {
+    content: '';
+    @apply absolute -inset-0.5 rounded-2xl opacity-75 blur-sm;
+    background: linear-gradient(135deg, #667eea, #764ba2, #f64f59, #12c2e9);
+    background-size: 400% 400%;
+    animation: gradientShift 4s ease infinite;
+    z-index: -1;
+  }
+
+  /* Floating particles effect */
+  .particle {
+    @apply absolute rounded-full opacity-20;
+    background: white;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Shimmer effect for loading states */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  /* Glowing text */
+  .text-glow {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5),
+                 0 0 40px rgba(255, 255, 255, 0.3),
+                 0 0 60px rgba(255, 255, 255, 0.1);
+  }
+
+  /* Success/Error states */
+  .success-glow {
+    @apply ring-2 ring-green-400/50;
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+  }
+
+  .error-glow {
+    @apply ring-2 ring-red-400/50;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+  }
+
+  /* Radio button custom styling */
+  .radio-glass {
+    @apply relative flex items-center gap-3 p-4 rounded-xl cursor-pointer transition-all duration-300;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .radio-glass:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .radio-glass.selected {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.5);
+  }
+
+  .radio-dot {
+    @apply w-5 h-5 rounded-full border-2 border-white/30 flex items-center justify-center transition-all duration-300;
+  }
+
+  .radio-dot.checked {
+    @apply border-purple-400;
+  }
+
+  .radio-dot.checked::after {
+    content: '';
+    @apply w-2.5 h-2.5 rounded-full bg-purple-400;
+    animation: scaleIn 0.2s ease-out;
+  }
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+/* Utility animations */
+@layer utilities {
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
 }
 
-.nav button {
-  padding: 8px 12px;
+/* Keyframes for gradient animation */
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
-.card {
-  background: white;
-  border: 1px solid #e1e3ee;
-  border-radius: 12px;
-  padding: 16px;
-  margin: 16px 0;
-}
-
-.row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 8px 0;
-}
-
-label {
-  display: block;
-  margin: 10px 0;
-}
-
-input, textarea {
-  width: 100%;
-  padding: 8px;
-  margin-top: 4px;
-  border: 1px solid #d7dbe8;
-  border-radius: 8px;
-}
-
-button {
-  cursor: pointer;
-  border: 1px solid #d7dbe8;
-  background: #fff;
-  padding: 10px 14px;
-  border-radius: 10px;
-}
-
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.question {
-  border-top: 1px solid #eceef6;
-  padding-top: 12px;
-  margin-top: 12px;
-}
-
-.choice {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  margin: 6px 0;
-}
-
-.choice input[type="radio"] {
-  width: auto;
-  margin: 0;
-}
-
-.error {
-  color: #b00020;
+@keyframes scaleIn {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
 }

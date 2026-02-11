@@ -15,6 +15,7 @@ import { quizzesRoutes } from "./routes/quizzes";
 import { attemptsRoutes } from "./routes/attempts";
 import { exportsRoutes } from "./routes/exports";
 import { errorHandler } from "./middleware/errorHandler";
+import { optionalAuth, isCognitoConfigured } from "./middleware/auth";
 import { config, isXrayDisabled } from "./config";
 
 export function buildApp() {
@@ -38,6 +39,23 @@ export function buildApp() {
   app.use(express.json({ limit: "1mb" }));
 
   app.get("/health", (_req, res) => res.json({ ok: true }));
+
+  // Auth info endpoint
+  app.get("/api/auth/config", (_req, res) => {
+    if (isCognitoConfigured()) {
+      res.json({
+        enabled: true,
+        region: config.COGNITO_REGION,
+        userPoolId: config.COGNITO_USER_POOL_ID,
+        clientId: config.COGNITO_CLIENT_ID,
+      });
+    } else {
+      res.json({ enabled: false });
+    }
+  });
+
+  // Apply optional auth to all API routes
+  app.use("/api", optionalAuth);
 
   const ddb = createDynamoDocClient();
   const s3 = createS3Client();
