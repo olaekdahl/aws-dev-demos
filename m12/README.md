@@ -38,6 +38,25 @@ After running the signup-signin demo, you can start the FastAPI app:
 uvicorn m12.api.main:app --reload
 ```
 
+### Getting a Token
+
+The demo output truncates tokens. To get the full ID token for testing:
+
+```bash
+# Replace CLIENT_ID with the App Client ID from the demo output
+TOKEN=$(aws cognito-idp initiate-auth \
+  --client-id <CLIENT_ID> \
+  --auth-flow USER_PASSWORD_AUTH \
+  --auth-parameters USERNAME=demo@example.com,PASSWORD=DemoPass1! \
+  --region us-east-1 \
+  --query 'AuthenticationResult.IdToken' \
+  --output text)
+
+curl -H "Authorization: Bearer $TOKEN" http://localhost:8000/private
+```
+
+> **Note:** Use `IdToken` (not `AccessToken`) because the FastAPI app validates the `aud` claim, which only exists in ID tokens.
+
 ## AWS Services
 
 - **Cognito** -- CreateUserPool, CreateUserPoolClient, AdminCreateUser, AdminSetUserPassword, InitiateAuth
