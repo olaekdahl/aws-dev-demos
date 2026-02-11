@@ -48,16 +48,30 @@ async function validateToken(token: string): Promise<CognitoUser | null> {
     const clientId = config.COGNITO_CLIENT_ID!;
     const issuer = `https://cognito-idp.${region}.amazonaws.com/${userPoolId}`;
 
+    // Don't validate audience in jwtVerify - Cognito access tokens use client_id, not aud
     const { payload } = await jwtVerify(token, jwksSet, {
       issuer,
-      audience: clientId,
     });
 
-    // For access tokens, audience might not be set, so verify token_use
+    // Verify token_use claim
     const tokenUse = (payload as JWTPayload & { token_use?: string }).token_use;
     if (tokenUse !== "access" && tokenUse !== "id") {
       logger.warn({ tokenUse }, "Invalid token_use claim");
       return null;
+    }
+
+    // Verify client_id for access tokens, aud for ID tokens
+    if (tokenUse === "access") {
+      const tokenClientId = (payload as any).client_id;
+      if (tokenClientId !== clientId) {
+        logger.warn({ tokenClientId, expectedClientId: clientId }, "Invalid client_id in access token");
+        return null;
+      }
+    } else if (tokenUse === "id") {
+      if (payload.aud !== clientId) {
+        logger.warn({ aud: payload.aud, expectedClientId: clientId }, "Invalid aud in ID token");
+        return null;
+      }
     }
 
     return {

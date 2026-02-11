@@ -26,4 +26,16 @@ docker push "${WORKER_REPO}:${TAG}"
 docker build -t "${WEB_REPO}:${TAG}" services/web
 docker push "${WEB_REPO}:${TAG}"
 
-echo "Done."
+# Write image URIs to env file for terraform-apply.sh
+ENV_FILE="$(dirname "$0")/../.env.images"
+cat > "$ENV_FILE" <<EOF
+export API_IMAGE="${API_REPO}:${TAG}"
+export WORKER_IMAGE="${WORKER_REPO}:${TAG}"
+export WEB_IMAGE="${WEB_REPO}:${TAG}"
+EOF
+
+echo ""
+echo "Done. Image URIs written to .env.images"
+echo ""
+echo "Run the following to deploy:"
+echo "  source .env.images && ./scripts/terraform-apply.sh"

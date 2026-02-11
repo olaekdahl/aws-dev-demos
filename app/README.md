@@ -121,21 +121,33 @@ This will:
 #### Step 2: Push Container Images
 
 ```bash
-./scripts/push-images.sh <tag>
+AWS_REGION=us-east-1 ./scripts/push-images.sh [tag]
 ```
 
 This builds and pushes the `web`, `api`, and `worker` Docker images to ECR.
+The script also writes the image URIs to `.env.images` for use in the next step.
 
 #### Step 3: Deploy ECS Services
 
 **Option A — Manual deployment:**
 
 ```bash
+# Source the image URIs from push-images.sh
+source .env.images
+
+# Optional: Set remote state config (if using S3 backend)
 export TF_STATE_BUCKET=<bucket-name>
 export TF_LOCK_TABLE=<table-name>
 export TF_STATE_KEY=code-quiz/app.tfstate
 
-./scripts/terraform-apply.sh
+# Deploy
+AWS_REGION=us-east-1 ./scripts/terraform-apply.sh
+```
+
+Or as a one-liner after pushing images:
+
+```bash
+source .env.images && AWS_REGION=us-east-1 ./scripts/terraform-apply.sh
 ```
 
 **Option B — Automated via GitHub Actions:**

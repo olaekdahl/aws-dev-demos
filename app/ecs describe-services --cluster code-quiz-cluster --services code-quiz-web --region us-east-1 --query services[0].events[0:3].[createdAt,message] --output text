@@ -1,0 +1,27 @@
+[
+    {
+        "id": "d7060924-0171-4703-89fe-7eb1413fa8f7",
+        "createdAt": "2026-02-10T20:06:59.093000-08:00",
+        "message": "(service code-quiz-web) was unable to place a task. Reason: CannotPullContainerError: pull image manifest has been retried 7 time(s): failed to resolve ref 397188165174.dkr.ecr.us-east-1.amazonaws.com/code-quiz/web:latest: 397188165174.dkr.ecr.us-east-1.amazonaws.com/code-quiz/web:latest: not found."
+    },
+    {
+        "id": "cda684e1-05c7-4945-ad43-375822b6e53e",
+        "createdAt": "2026-02-10T20:06:27.457000-08:00",
+        "message": "(service code-quiz-web) (deployment ecs-svc/7174497297321634743) deployment failed: tasks failed to start."
+    },
+    {
+        "id": "1852f68f-0e61-4a77-8f8c-13c9ab8b010e",
+        "createdAt": "2026-02-10T20:05:33.170000-08:00",
+        "message": "(service code-quiz-web) has started 1 tasks: (task ca808800eaf9471a900ee4c49ec4f187)."
+    },
+    {
+        "id": "f873dc03-1d1c-4c01-90cb-a97f37548148",
+        "createdAt": "2026-02-10T20:05:02.094000-08:00",
+        "message": "(service code-quiz-web) was unable to place a task. Reason: CannotPullContainerError: pull image manifest has been retried 7 time(s): failed to resolve ref 397188165174.dkr.ecr.us-east-1.amazonaws.com/code-quiz/web:latest: 397188165174.dkr.ecr.us-east-1.amazonaws.com/code-quiz/web:latest: not found."
+    },
+    {
+        "id": "c304160d-0e71-4122-b68f-726c324102c1",
+        "createdAt": "2026-02-10T20:03:33.443000-08:00",
+        "message": "(service code-quiz-web) has started 1 tasks: (task 58a8ccd98c3e45df83f78f1db5835eff)."
+    }
+]

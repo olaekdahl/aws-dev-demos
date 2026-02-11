@@ -1,0 +1,19 @@
+------------------------------------------------------------------------------------------------
+|                                    DescribeTaskDefinition                                    |
++--------------------------+-------------------------------------------------------------------+
+|           name           |                               value                               |
++--------------------------+-------------------------------------------------------------------+
+|  [1m[34mS3_BUCKET[0m               |  [1m[34mcode-quiz-exports-3133d1d8[0m                                       |
+|  [1m[34mAWS_REGION[0m              |  [1m[34mus-east-1[0m                                                        |
+|  [1m[34mSQS_QUEUE_URL[0m           |  [1m[34mhttps://sqs.us-east-1.amazonaws.com/397188165174/code-quiz-jobs[0m  |
+|  [1m[34mPORT[0m                    |  [1m[34m3000[0m                                                             |
+|  [1m[34mDDB_TABLE_ATTEMPTS[0m      |  [1m[34mcode-quiz-attempts[0m                                               |
+|  [1m[34mDDB_TABLE_QUIZZES[0m       |  [1m[34mcode-quiz-quizzes[0m                                                |
+|  [1m[34mCOGNITO_USER_POOL_ID[0m    |  [1m[34mus-east-1_SyS3FLviG[0m                                              |
+|  [1m[34mDDB_TABLE_EXPORTS[0m       |  [1m[34mcode-quiz-exports[0m                                                |
+|  [1m[34mAWS_XRAY_DAEMON_ADDRESS[0m |  [1m[34m127.0.0.1:2000[0m                                                   |
+|  [1m[34mCOGNITO_REGION[0m          |  [1m[34mus-east-1[0m                                                        |
+|  [1m[34mNODE_ENV[0m                |  [1m[34mproduction[0m                                                       |
+|  [1m[34mLOG_LEVEL[0m               |  [1m[34minfo[0m                                                             |
+|  [1m[34mCOGNITO_CLIENT_ID[0m       |  [1m[34m324o59v3o7b7t1dhl5b6vqqmsh[0m                                       |
++--------------------------+-------------------------------------------------------------------+
