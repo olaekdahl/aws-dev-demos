@@ -28,6 +28,7 @@ It is designed to be:
 | <img src="../icons/Identity-and-Access-Management.svg" width="40"> | **AWS IAM** | Least-privilege task roles and GitHub OIDC |
 | <img src="../icons/CloudWatch.svg" width="40"> | **Amazon CloudWatch** | Logs, metrics, alarms, and dashboards |
 | <img src="../icons/X-Ray.svg" width="40"> | **AWS X-Ray** | Distributed tracing via daemon sidecar |
+| <img src="../icons/Cognito.svg" width="40"> | **Amazon Cognito** | User authentication and authorization |
 
 ---
 
