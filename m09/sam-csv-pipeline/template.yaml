@@ -1,0 +1,87 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: S3 CSV upload triggers Lambda to parse and load data into DynamoDB
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Timeout: 30
+    MemorySize: 256
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+
+Resources:
+  # S3 Bucket for CSV uploads
+  CsvBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub csv-upload-${AWS::AccountId}-${Environment}
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: .csv
+            Function: !GetAtt CsvProcessorFunction.Arn
+
+  # Permission for S3 to invoke Lambda
+  S3InvokeLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref CsvProcessorFunction
+      Action: lambda:InvokeFunction
+      Principal: s3.amazonaws.com
+      SourceArn: !Sub arn:aws:s3:::csv-upload-${AWS::AccountId}-${Environment}
+      SourceAccount: !Ref AWS::AccountId
+
+  # DynamoDB table for storing CSV data
+  CsvDataTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub csv-data-${Environment}
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+      TimeToLiveSpecification:
+        AttributeName: ttl
+        Enabled: true
+
+  # Lambda function to process CSV files
+  CsvProcessorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub csv-processor-${Environment}
+      CodeUri: src/
+      Handler: handler.lambda_handler
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref CsvDataTable
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Sub csv-upload-${AWS::AccountId}-${Environment}
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CsvDataTable
+
+Outputs:
+  BucketName:
+    Description: S3 bucket for CSV uploads
+    Value: !Ref CsvBucket
+  TableName:
+    Description: DynamoDB table for CSV data
+    Value: !Ref CsvDataTable
+  FunctionName:
+    Description: Lambda function name
+    Value: !Ref CsvProcessorFunction

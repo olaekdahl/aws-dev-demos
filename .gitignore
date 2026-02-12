@@ -6,6 +6,9 @@ __pycache__/
 .aws-dev-demos-state/
 .vscode/
 
+#AWS SAM
+.aws-sam/
+
 # AWS S3
 .s3*
 

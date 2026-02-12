@@ -36,7 +36,7 @@ Hands-on Python demos for AWS services, organized by module. Each module is self
 | **m06** | S3 Objects | `crud` · `multipart` · `events` · `presigned` · `encryption` |
 | **m07** | DynamoDB CRUD | `leaderboard` · `conditional-writes` |
 | **m08** | DynamoDB Advanced | `gsi` · `throughput` · `ttl` |
-| **m09** | Lambda | `deploy` · `cold-start` · `errors` |
+| **m09** | Lambda | `deploy` · `cold-start` · `errors` · SAM CSV pipeline |
 | **m10** | API Gateway | `test-rest` · SAM REST API · SAM WebSocket chat |
 | **m11** | Async Patterns | `fanout` · `dlq` · `fifo` · SAM EventBridge |
 | **m12** | Cognito | `signup-signin` · `token-refresh` |

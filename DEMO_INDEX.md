@@ -10,7 +10,7 @@
 | [m06](m06/) | S3 Objects | `object-crud` `multipart` `multipart-parallel` `event-pipeline` `presigned` `encryption` | `--cleanup` |
 | [m07](m07/) | DynamoDB CRUD | `leaderboard` `conditional` | `--cleanup` |
 | [m08](m08/) | DynamoDB Advanced | `gsi` `throughput` `ttl` `query-scan` | `--cleanup` |
-| [m09](m09/) | Lambda | `deploy` `cold-start` `errors` | `--cleanup` |
+| [m09](m09/) | Lambda | `deploy` `cold-start` `errors` + SAM CSV pipeline | `--cleanup` / `sam delete` |
 | [m10](m10/) | API Gateway | `test-rest` + SAM apps | `sam delete` |
 | [m11](m11/) | Async Patterns | `fanout` `dlq` `fifo` + SAM EventBridge | `--cleanup` / `sam delete` |
 | [m12](m12/) | Cognito | `signup-signin` `token-refresh` | `--cleanup` |
@@ -49,7 +49,7 @@ sam deploy --guided
 sam delete
 ```
 
-SAM apps: `m09/sam-event-source`, `m10/sam-rest-api`, `m10/sam-websocket-chat`, `m11/sam-eventbridge`, `m13`, `m15`
+SAM apps: `m09/sam-event-source`, `m09/sam-csv-pipeline`, `m10/sam-rest-api`, `m10/sam-websocket-chat`, `m11/sam-eventbridge`, `m13`, `m15`
 
 ## Old-to-New Directory Mapping
 
