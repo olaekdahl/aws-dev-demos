@@ -35,29 +35,32 @@ After deployment, send a test message:
 # Get the queue URL from stack outputs
 QUEUE_URL=$(aws cloudformation describe-stacks \
   --stack-name sam-event-source \
+  --region us-west-1 \
   --query 'Stacks[0].Outputs[?OutputKey==`QueueUrl`].OutputValue' \
   --output text)
 
 # Send a test message
 aws sqs send-message \
   --queue-url $QUEUE_URL \
+  --region us-west-1 \
   --message-body '{"hello": "world"}'
 
 # Send multiple messages
 for i in {1..5}; do
   aws sqs send-message \
     --queue-url $QUEUE_URL \
+    --region us-west-1 \
     --message-body "{\"message\": $i}"
 done
 
 # Check Lambda logs
-sam logs -n WorkerFunction --stack-name sam-event-source --tail
+sam logs -n WorkerFunction --stack-name sam-event-source --tail --region us-west-1
 ```
 
 ## Cleanup
 
 ```bash
-sam delete --stack-name sam-event-source
+sam delete --stack-name sam-event-source --region us-west-1
 ```
 
 ## Configuration
